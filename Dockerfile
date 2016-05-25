@@ -1,6 +1,6 @@
 FROM ubuntu:trusty
 MAINTAINER LiskHQ
-LABEL description="Lisk Docker Image" version="1.2.0"
+LABEL description="Lisk Docker Image" version="1.3.0"
 
 # Install Essentials
 WORKDIR /~
@@ -24,12 +24,12 @@ RUN echo "%lisk ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 RUN /etc/init.d/postgresql start && \
     sudo -u postgres createuser --createdb lisk && \
     sudo -u postgres psql -c "ALTER USER \"lisk\" WITH PASSWORD 'password';" && \
-    sudo -u postgres createdb -O lisk lisk_test
+    sudo -u postgres createdb -O lisk lisk_main
 
 # Install Lisk
 USER lisk
 WORKDIR /home/lisk
-RUN wget https://downloads.lisk.io/lisk/test/lisk-source.tar.gz -O lisk-source.tar.gz
+RUN wget https://downloads.lisk.io/lisk/main/lisk-source.tar.gz -O lisk-source.tar.gz
 RUN tar -zxvf lisk-source.tar.gz
 RUN mv -f lisk-source lisk
 RUN rm lisk-source.tar.gz
@@ -51,5 +51,5 @@ USER lisk
 ENV TOP=true
 ENV TERM=xterm
 
-EXPOSE 7000
-ENTRYPOINT ./start_lisk test
+EXPOSE 8000
+ENTRYPOINT ./start_lisk main
